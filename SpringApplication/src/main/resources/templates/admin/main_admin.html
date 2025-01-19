@@ -11,6 +11,10 @@
 <div class="container mt-5 text-center">
   <h1 class="display-4">Welcome, <span sec:authentication="name"></span>!</h1>
   <p class="lead text-success">You are logged in as an <strong>Admin</strong>.</p>
+  <div class="mt-4">
+    <!-- Button to navigate to admin kontrakty -->
+    <a th:href="@{/admin/kontrakty}" class="btn btn-primary btn-lg">Manage Kontrakty</a>
+  </div>
   <form th:action="@{/logout}" method="post" class="mt-4">
     <button type="submit" class="btn btn-danger">Log Out</button>
   </form>
