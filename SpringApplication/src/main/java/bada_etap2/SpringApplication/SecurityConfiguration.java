@@ -39,7 +39,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index","/pracownicy","/kontrakty").permitAll()  // Allow public access to /index
+                        .requestMatchers("/", "/index","/pracownicy","/kontrakty", "/static/**").permitAll()  // Allow public access to /index
                         .anyRequest().authenticated()  // Require authentication for other pages
                 )
                 .formLogin(form -> form
