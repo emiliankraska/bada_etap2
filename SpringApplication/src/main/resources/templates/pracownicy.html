@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Pracownicy List</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+<h1>Pracownicy List</h1>
+<table>
+  <thead>
+  <tr>
+    <th>ID_PRACOWNIKA</th>
+    <th>IMIE</th>
+    <th>NAZWISKO</th>
+    <th>PESEL</th>
+    <th>DATA_URODZENIA</th>
+    <th>PLEC</th>
+    <th>ID_ARMATORA</th>
+    <th>ID_ADRESU</th>
+    <th>ID_STANOWISKA</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="pracownik : ${pracownicy}">
+    <td th:text="${pracownik.split(',')[0]}"></td>
+    <td th:text="${pracownik.split(',')[1]}"></td>
+    <td th:text="${pracownik.split(',')[2]}"></td>
+    <td th:text="${pracownik.split(',')[3]}"></td>
+    <td th:text="${pracownik.split(',')[4]}"></td>
+    <td th:text="${pracownik.split(',')[5]}"></td>
+    <td th:text="${pracownik.split(',')[6]}"></td>
+    <td th:text="${pracownik.split(',')[7]}"></td>
+    <td th:text="${pracownik.split(',')[8]}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

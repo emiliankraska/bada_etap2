@@ -1,35 +1,40 @@
 package bada_etap2.SpringApplication;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-
-
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@Component
-public class DatabaseTest implements CommandLineRunner {
+@Controller
+public class DatabaseTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Override
-    public void run(String... args) throws Exception {
+    @GetMapping("/pracownicy")
+    public String getPracownicy(Model model) {
         try {
-            // Query the newly created TEST_TABLE
-            List<String> testResults = jdbcTemplate.query("SELECT ID_PRACOWNIKA, IMIE FROM PRACOWNICY",
-                    (rs, rowNum) -> "ID_PRACOWNIKA: " + rs.getInt("ID_PRACOWNIKA") + ", IMIE: " + rs.getString("IMIE"));
+            // Query to select all rows from PRACOWNICY table
+            List<String> pracownicyList = jdbcTemplate.query("SELECT * FROM PRACOWNICY",
+                    (rs, rowNum) -> "ID_PRACOWNIKA: " + rs.getInt("ID_PRACOWNIKA") +
+                            ", IMIE: " + rs.getString("IMIE") +
+                            ", NAZWISKO: " + rs.getString("NAZWISKO") +
+                            ", PESEL: " + rs.getString("PESEL") +
+                            ", DATA_URODZENIA: " + rs.getDate("DATA_URODZENIA") +
+                            ", PLEC: " + rs.getString("PLEC") +
+                            ", ID_ARMATORA: " + rs.getInt("ID_ARMATORA") +
+                            ", ID_ADRESU: " + rs.getInt("ID_ADRESU") +
+                            ", ID_STANOWISKA: " + rs.getInt("ID_STANOWISKA"));
 
-            // Print the results to the console
-            if (testResults.isEmpty()) {
-                System.out.println("No data found in TEST_TABLE.");
-            } else {
-                testResults.forEach(System.out::println);
-            }
+            // Add the list to the model to be used in the Thymeleaf template
+            model.addAttribute("pracownicy", pracownicyList);
+
         } catch (Exception e) {
             System.err.println("Database connection failed: " + e.getMessage());
         }
+        return "pracownicy";  // Corresponds to pracownicy.html Thymeleaf template
     }
 }
