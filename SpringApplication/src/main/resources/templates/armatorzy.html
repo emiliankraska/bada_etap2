@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Armatorzy</title>
+</head>
+<body>
+<h1>List of Armatorzy</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID_ARMATORA</th>
+    <th>NAZWA</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="armator : ${armatorzy}">
+    <td th:text="${armator.idArmatora}"></td>
+    <td th:text="${armator.nazwa}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -50,6 +50,7 @@ public class SecurityConfiguration {
                         .logoutSuccessUrl("/index")  // Redirect to /index on successful logout
                         .permitAll()
                 );
+
         return http.build();
     }
 }
