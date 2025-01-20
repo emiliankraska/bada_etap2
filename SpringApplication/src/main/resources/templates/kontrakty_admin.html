@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Kontrakty - Admin</title>
+</head>
+<body>
+<h1>Kontrakty (Admin View)</h1>
+<ul>
+  <li th:each="kontrakt : ${kontrakty}">
+    <span th:text="${kontrakt}"></span>
+  </li>
+</ul>
+</body>
+</html>

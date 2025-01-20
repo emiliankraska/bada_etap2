@@ -39,15 +39,17 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index","/pracownicy","/kontrakty", "/static/**").permitAll()  // Allow public access to /index
-                        .anyRequest().authenticated()  // Require authentication for other pages
+                        .requestMatchers("/", "/index", "/css/**", "/pracownicy").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // Admin-only access
+                        .requestMatchers("/user/**").hasRole("USER") // User-only access
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")  // Custom login page
+                        .loginPage("/login")
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/index")  // Redirect to /index on successful logout
+                        .logoutSuccessUrl("/index")
                         .permitAll()
                 );
 
