@@ -13,18 +13,32 @@
     <button type="submit" class="btn btn-danger">Log Out</button>
   </form>
 </div>
-<div class="container mt-5 text-center">
-  <h1 class="display-4">Welcome, <span sec:authentication="name"></span>!</h1>
-  <p class="lead text-success">You are logged in as an <strong>Admin</strong>.</p>
-  <div class="mt-4">
-    <!-- Button to navigate to admin kontrakty -->
-    <a th:href="@{/admin/kontrakty}" class="btn btn-primary btn-lg">Manage Kontrakty</a>
-  </div>
-  <div class="mt-4">
-    <!-- Button to navigate to admin pracownicy -->
-    <a th:href="@{/admin/pracownicy}" class="btn btn-secondary btn-lg">Manage Pracownicy</a>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+
+          <div class="container mt-5 text-center">
+            <h1 class="display-4">Welcome, <span sec:authentication="name"></span>!</h1>
+            <p class="lead text-success">You are logged in as an <strong>Admin</strong>.</p>
+            <div class="mt-4">
+              <!-- Button to navigate to admin kontrakty -->
+              <a th:href="@{/admin/kontrakty}" class="btn btn-primary btn-lg">Manage Kontrakty</a>
+            </div>
+            <div class="mt-4">
+              <!-- Button to navigate to admin pracownicy -->
+              <a th:href="@{/admin/pracownicy}" class="btn btn-secondary btn-lg">Manage Pracownicy</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
 <!-- Bootstrap JavaScript Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
