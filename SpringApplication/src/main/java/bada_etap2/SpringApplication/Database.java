@@ -80,8 +80,8 @@ public class Database {
                     "FROM KONTRAKTY k " +
                     "JOIN ARMATORZY a ON k.ID_ARMATORA = a.ID_ARMATORA " +
                     "JOIN STATKI s ON k.ID_STATKU = s.ID_STATKU " +
-                    "ORDER BY k.ID_KONTRAKTU " +
-                    "FETCH FIRST 2 ROWS ONLY";
+                    "WHERE a.ID_ARMATORA = 1 " +
+                    "ORDER BY k.ID_KONTRAKTU";
 
 
             List<Kontrakt> kontraktyList = jdbcTemplate.query(sql,
