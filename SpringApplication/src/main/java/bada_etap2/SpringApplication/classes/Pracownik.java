@@ -7,9 +7,7 @@ public class Pracownik {
     private String nazwisko;
     private String pesel;
     private String plec;
-    private int idArmatora;
-    private int idAdresu;
-    private int idStanowiska;
+
 
     // Getters and Setters
     public int getIdPracownika() {
@@ -52,29 +50,7 @@ public class Pracownik {
         this.plec = plec;
     }
 
-    public int getIdArmatora() {
-        return idArmatora;
-    }
 
-    public void setIdArmatora(int idArmatora) {
-        this.idArmatora = idArmatora;
-    }
-
-    public int getIdAdresu() {
-        return idAdresu;
-    }
-
-    public void setIdAdresu(int idAdresu) {
-        this.idAdresu = idAdresu;
-    }
-
-    public int getIdStanowiska() {
-        return idStanowiska;
-    }
-
-    public void setIdStanowiska(int idStanowiska) {
-        this.idStanowiska = idStanowiska;
-    }
 }
 
 

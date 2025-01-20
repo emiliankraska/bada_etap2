@@ -35,9 +35,7 @@ public class Database {
                         pracownik.setNazwisko(rs.getString("NAZWISKO"));
                         pracownik.setPesel(rs.getString("PESEL"));
                         pracownik.setPlec(rs.getString("PLEC"));
-                        pracownik.setIdArmatora(rs.getInt("ID_ARMATORA"));
-                        pracownik.setIdAdresu(rs.getInt("ID_ADRESU"));
-                        pracownik.setIdStanowiska(rs.getInt("ID_STANOWISKA"));
+
                         return pracownik;
                     });
 
@@ -111,6 +109,24 @@ public class Database {
         }
         return "redirect:/admin/pracownicy";  // Redirect back to the list of employees
     }
+    @GetMapping("/admin/pracownicy/add")
+    public String showAddPracownikForm(Model model) {
+        model.addAttribute("pracownik", new Pracownik()); // Bind a new empty object for the form
+        return "add_pracownik"; // Thymeleaf template for adding employees
+    }
+
+    @PostMapping("/admin/pracownicy/add")
+    public String addPracownik(Pracownik pracownik) {
+        try {
+            // SQL query to insert a new employee into the database
+            String sql = "INSERT INTO PRACOWNICY (IMIE, NAZWISKO, PESEL, PLEC) VALUES (?, ?, ?, ?)";
+            jdbcTemplate.update(sql, pracownik.getImie(), pracownik.getNazwisko(), pracownik.getPesel(), pracownik.getPlec());
+        } catch (Exception e) {
+            System.err.println("Failed to add employee: " + e.getMessage());
+        }
+        return "redirect:/admin/pracownicy"; // Redirect to the employee list
+    }
+
 
 
 }
