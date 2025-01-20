@@ -5,8 +5,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import bada_etap2.SpringApplication.classes.Pracownik;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+
 
 @Controller
 public class Database {
@@ -17,25 +22,30 @@ public class Database {
     @GetMapping("/admin/pracownicy")
     public String getPracownicy(Model model) {
         try {
-            // Query to select all rows from PRACOWNICY table
-            List<String> pracownicyList = jdbcTemplate.query("SELECT * FROM PRACOWNICY",
-                    (rs, rowNum) -> rs.getInt("ID_PRACOWNIKA") +
-                            "," + rs.getString("IMIE") +
-                            "," + rs.getString("NAZWISKO") +
-                            "," + rs.getString("PESEL") +
-                            "," + rs.getDate("DATA_URODZENIA") +
-                            "," + rs.getString("PLEC") +
-                            "," + rs.getInt("ID_ARMATORA") +
-                            "," + rs.getInt("ID_ADRESU") +
-                            "," + rs.getInt("ID_STANOWISKA"));
+            // Query excluding DATA_URODZENIA
+            String sql = "SELECT ID_PRACOWNIKA, IMIE, NAZWISKO, PESEL, " +
+                    "PLEC, ID_ARMATORA, ID_ADRESU, ID_STANOWISKA FROM PRACOWNICY";
 
-            // Add the list to the model to be used in the Thymeleaf template
+            // Query the database and map the results to Pracownik objects
+            List<Pracownik> pracownicyList = jdbcTemplate.query(sql,
+                    (rs, rowNum) -> {
+                        Pracownik pracownik = new Pracownik();
+                        pracownik.setIdPracownika(rs.getInt("ID_PRACOWNIKA"));
+                        pracownik.setImie(rs.getString("IMIE"));
+                        pracownik.setNazwisko(rs.getString("NAZWISKO"));
+                        pracownik.setPesel(rs.getString("PESEL"));
+                        pracownik.setPlec(rs.getString("PLEC"));
+
+                        return pracownik;
+                    });
+
+            // Add the list to the model
             model.addAttribute("pracownicy", pracownicyList);
 
         } catch (Exception e) {
             System.err.println("Database connection failed: " + e.getMessage());
         }
-        return "pracownicy";  // Corresponds to pracownicy.html Thymeleaf template
+        return "pracownicy";  // Thymeleaf template
     }
 
     @GetMapping("/admin/kontrakty")
@@ -88,5 +98,35 @@ public class Database {
         }
         return "kontrakty_user"; // User-specific Thymeleaf template
     }
+    @PostMapping("/admin/pracownicy/{id}")
+    public String deletePracownik(@PathVariable("id") int id) {
+        try {
+            // SQL query to delete employee by ID
+            String sql = "DELETE FROM PRACOWNICY WHERE ID_PRACOWNIKA = ?";
+            jdbcTemplate.update(sql, id);
+        } catch (Exception e) {
+            System.err.println("Database connection failed: " + e.getMessage());
+        }
+        return "redirect:/admin/pracownicy";  // Redirect back to the list of employees
+    }
+    @GetMapping("/admin/pracownicy/add")
+    public String showAddPracownikForm(Model model) {
+        model.addAttribute("pracownik", new Pracownik()); // Bind a new empty object for the form
+        return "add_pracownik"; // Thymeleaf template for adding employees
+    }
+
+    @PostMapping("/admin/pracownicy/add")
+    public String addPracownik(Pracownik pracownik) {
+        try {
+            // SQL query to insert a new employee into the database
+            String sql = "INSERT INTO PRACOWNICY (IMIE, NAZWISKO, PESEL, PLEC) VALUES (?, ?, ?, ?)";
+            jdbcTemplate.update(sql, pracownik.getImie(), pracownik.getNazwisko(), pracownik.getPesel(), pracownik.getPlec());
+        } catch (Exception e) {
+            System.err.println("Failed to add employee: " + e.getMessage());
+        }
+        return "redirect:/admin/pracownicy"; // Redirect to the employee list
+    }
+
+
 
 }
