@@ -5,6 +5,13 @@
   <link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 <body>
+
+<div class="container mt-5 text-end">
+  <form th:action="@{/logout}" method="post" class="mt-4">
+    <button type="submit" class="btn btn-danger">Log Out</button>
+  </form>
+</div>
+
 <div class="container mt-5">
   <h1>Add New Contract</h1>
 

@@ -5,19 +5,26 @@
   <link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 <body>
+
+<div class="container mt-5 text-end">
+  <form th:action="@{/logout}" method="post" class="mt-4">
+    <button type="submit" class="btn btn-danger">Log Out</button>
+  </form>
+</div>
+
 <div class="container mt-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Kontrakty (User View)</h1>
+    <h1>Contracts</h1>
   </div>
 
   <!-- Table for displaying contracts -->
   <table class="table table-bordered">
     <thead>
     <tr>
-      <th>ID Kontraktu</th>
-      <th>Tytuł Kontraktu</th>
-      <th>Nazwa Armatora</th>
-      <th>Nazwa Statku</th>
+      <th>Contract ID</th>
+      <th>Title</th>
+      <th>Shipowner</th>
+      <th>Ship</th>
       <th>Actions</th>
     </tr>
     </thead>
@@ -39,7 +46,7 @@
 
   <div class="mt-4">
     <!-- Return button to navigate back to the user page -->
-    <a th:href="@{/user/main}" class="btn btn-secondary">Return to User Page</a>
+    <a th:href="@{/user/main}" class="btn btn-success">Return to Main Page</a>
   </div>
 </div>
 

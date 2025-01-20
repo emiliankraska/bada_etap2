@@ -8,6 +8,7 @@
   <link href="/css/bootstrap.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+
 <div class="container mt-5 text-end">
   <form th:action="@{/logout}" method="post" class="mt-4">
     <button type="submit" class="btn btn-danger">Log Out</button>
@@ -25,11 +26,11 @@
             <p class="lead text-success">You are logged in as an <strong>Admin</strong>.</p>
             <div class="mt-4">
               <!-- Button to navigate to admin kontrakty -->
-              <a th:href="@{/admin/kontrakty}" class="btn btn-primary btn-lg">Manage Kontrakty</a>
+              <a th:href="@{/admin/kontrakty}" class="btn btn-primary btn-lg">Manage Contracts</a>
             </div>
             <div class="mt-4">
               <!-- Button to navigate to admin pracownicy -->
-              <a th:href="@{/admin/pracownicy}" class="btn btn-secondary btn-lg">Manage Pracownicy</a>
+              <a th:href="@{/admin/pracownicy}" class="btn btn-primary btn-lg">Manage Employees</a>
             </div>
           </div>
 

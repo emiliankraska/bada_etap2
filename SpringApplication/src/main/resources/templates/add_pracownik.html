@@ -5,15 +5,22 @@
   <link href="/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
+
+<div class="container mt-5 text-end">
+  <form th:action="@{/logout}" method="post" class="mt-4">
+    <button type="submit" class="btn btn-danger">Log Out</button>
+  </form>
+</div>
+
 <div class="container mt-5">
   <h1>Add New Employee</h1>
   <form th:action="@{/admin/pracownicy/add}" method="post">
     <div class="mb-3">
-      <label for="imie" class="form-label">Imię</label>
+      <label for="imie" class="form-label">Name</label>
       <input type="text" class="form-control" id="imie" name="imie" th:value="${pracownik.imie}" required>
     </div>
     <div class="mb-3">
-      <label for="nazwisko" class="form-label">Nazwisko</label>
+      <label for="nazwisko" class="form-label">Surname</label>
       <input type="text" class="form-control" id="nazwisko" name="nazwisko" th:value="${pracownik.nazwisko}" required>
     </div>
     <div class="mb-3">
@@ -21,7 +28,7 @@
       <input type="text" class="form-control" id="pesel" name="pesel" th:value="${pracownik.pesel}" required>
     </div>
     <div class="mb-3">
-      <label for="plec" class="form-label">Płeć</label>
+      <label for="plec" class="form-label">Gender</label>
       <select class="form-select" id="plec" name="plec" th:value="${pracownik.plec}" required>
         <option value="M">Male</option>
         <option value="K">Female</option>

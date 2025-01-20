@@ -13,8 +13,8 @@ public class AppController implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/index").setViewName("index");
-        registry.addViewController("/").setViewName("index");
+//        registry.addViewController("/index").setViewName("index");
+//        registry.addViewController("/").setViewName("index");
         registry.addViewController("/main").setViewName("main");
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/error").setViewName("error");
