@@ -19,15 +19,15 @@ public class Database {
         try {
             // Query to select all rows from PRACOWNICY table
             List<String> pracownicyList = jdbcTemplate.query("SELECT * FROM PRACOWNICY",
-                    (rs, rowNum) -> "ID_PRACOWNIKA: " + rs.getInt("ID_PRACOWNIKA") +
-                            ", IMIE: " + rs.getString("IMIE") +
-                            ", NAZWISKO: " + rs.getString("NAZWISKO") +
-                            ", PESEL: " + rs.getString("PESEL") +
-                            ", DATA_URODZENIA: " + rs.getDate("DATA_URODZENIA") +
-                            ", PLEC: " + rs.getString("PLEC") +
-                            ", ID_ARMATORA: " + rs.getInt("ID_ARMATORA") +
-                            ", ID_ADRESU: " + rs.getInt("ID_ADRESU") +
-                            ", ID_STANOWISKA: " + rs.getInt("ID_STANOWISKA"));
+                    (rs, rowNum) -> rs.getInt("ID_PRACOWNIKA") +
+                            "," + rs.getString("IMIE") +
+                            "," + rs.getString("NAZWISKO") +
+                            "," + rs.getString("PESEL") +
+                            "," + rs.getDate("DATA_URODZENIA") +
+                            "," + rs.getString("PLEC") +
+                            "," + rs.getInt("ID_ARMATORA") +
+                            "," + rs.getInt("ID_ADRESU") +
+                            "," + rs.getInt("ID_STANOWISKA"));
 
             // Add the list to the model to be used in the Thymeleaf template
             model.addAttribute("pracownicy", pracownicyList);

@@ -1,11 +1,63 @@
 /* styles.css */
+
+:root {
+    --primary-color: #002387;  /* Kolor główny */
+    --secondary-color: #b1b7de; /* Kolor dodatkowy */
+    --border-color: #5996ca;      /* Kolor obramowań */
+    --hover: #1d5585;
+    --primary-hover: #8c92b8;
+}
+
+body {
+    background-image: url("../images/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+html {
+    height: 100%;
+}
+
+h1 {
+    color: var(--primary-color); /* Kolor nagłówka */
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #fff;
 }
 
 th, td {
     padding: 10px;
     text-align: left;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
 }
+
+a {
+    color: var(--secondary-color); /* Kolor linków */
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--primary-color); /* Kolor linków po najechaniu */
+}
+
+a {
+    color: var(--border-color); /* Kolor linków */
+    text-decoration: none; /* Usuwa podkreślenie linku */
+    border: 2px solid var(--secondary-color); /* Obramowanie linku */
+    padding: 5px; /* Odstęp wokół linku, aby obramowanie było widoczne */
+    border-radius: 5px; /* Zaokrąglenie rogów obramowania */
+    background-color: var(--secondary-color); /* Kolor tła za linkiem, lekko przezroczysty */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Płynne przejście przy zmianie */
+}
+
+a:hover {
+    color: var(--primary-color); /* Zmiana koloru na główny przy najechaniu */
+    text-decoration: underline; /* Podkreślenie przy najechaniu */
+    border-color: var(--hover); /* Zmiana koloru obramowania przy najechaniu */
+}
+
+
