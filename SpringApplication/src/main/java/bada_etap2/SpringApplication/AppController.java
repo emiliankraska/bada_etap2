@@ -30,7 +30,7 @@ public class AppController implements WebMvcConfigurer {
             } else if (request.isUserInRole("USER")) {
                 return "redirect:/user/main";
             } else {
-                return "redirect:/index";
+                return "dawdadwda";
             }
         }
 
