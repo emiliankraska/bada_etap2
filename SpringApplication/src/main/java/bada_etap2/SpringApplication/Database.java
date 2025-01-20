@@ -14,7 +14,7 @@ public class Database {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @GetMapping("/pracownicy")
+    @GetMapping("/admin/pracownicy")
     public String getPracownicy(Model model) {
         try {
             // Query to select all rows from PRACOWNICY table
@@ -41,12 +41,15 @@ public class Database {
     @GetMapping("/admin/kontrakty")
     public String getKontraktyForAdmin(Model model) {
         try {
+            // SQL query to fetch all contract details for admin, ordered by ID_KONTRAKTU
             String sql = "SELECT k.ID_KONTRAKTU, k.TYTUL_KONTRAKTU, k.DATA_ZAWARCIA, " +
                     "a.NAZWA AS ARMATOR_NAZWA, s.NAZWA AS STATKI_NAZWA " +
                     "FROM KONTRAKTY k " +
                     "JOIN ARMATORZY a ON k.ID_ARMATORA = a.ID_ARMATORA " +
-                    "JOIN STATKI s ON k.ID_STATKU = s.ID_STATKU";
+                    "JOIN STATKI s ON k.ID_STATKU = s.ID_STATKU " +
+                    "ORDER BY k.ID_KONTRAKTU"; // Ensure results are sorted by ID_KONTRAKTU
 
+            // Query the database and map the results
             List<String> kontraktyList = jdbcTemplate.query(sql,
                     (rs, rowNum) -> "ID_KONTRAKTU: " + rs.getInt("ID_KONTRAKTU") +
                             ", TYTUL_KONTRAKTU: " + rs.getString("TYTUL_KONTRAKTU") +
@@ -64,11 +67,15 @@ public class Database {
     @GetMapping("/user/kontrakty")
     public String getKontraktyForUser(Model model) {
         try {
+            // SQL query for Oracle to fetch the first 5 contracts
             String sql = "SELECT k.ID_KONTRAKTU, k.TYTUL_KONTRAKTU, k.DATA_ZAWARCIA, " +
-                    "a.NAZWA AS ARMATOR_NAZWA " + // Limited data for users
+                    "a.NAZWA AS ARMATOR_NAZWA " +
                     "FROM KONTRAKTY k " +
-                    "JOIN ARMATORZY a ON k.ID_ARMATORA = a.ID_ARMATORA";
+                    "JOIN ARMATORZY a ON k.ID_ARMATORA = a.ID_ARMATORA " +
+                    "ORDER BY k.ID_KONTRAKTU " +
+                    "FETCH FIRST 5 ROWS ONLY"; // Fetch the first 5 rows
 
+            // Query the database and map the results
             List<String> kontraktyList = jdbcTemplate.query(sql,
                     (rs, rowNum) -> "ID_KONTRAKTU: " + rs.getInt("ID_KONTRAKTU") +
                             ", TYTUL_KONTRAKTU: " + rs.getString("TYTUL_KONTRAKTU") +
@@ -81,4 +88,5 @@ public class Database {
         }
         return "kontrakty_user"; // User-specific Thymeleaf template
     }
+
 }
