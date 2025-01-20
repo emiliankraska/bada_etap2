@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import bada_etap2.SpringApplication.classes.Pracownik;
+import bada_etap2.SpringApplication.classes.Kontrakt;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-
+import java.util.Map;
 
 @Controller
 public class Database {
@@ -22,11 +23,9 @@ public class Database {
     @GetMapping("/admin/pracownicy")
     public String getPracownicy(Model model) {
         try {
-            // Query excluding DATA_URODZENIA
             String sql = "SELECT ID_PRACOWNIKA, IMIE, NAZWISKO, PESEL, " +
                     "PLEC, ID_ARMATORA, ID_ADRESU, ID_STANOWISKA FROM PRACOWNICY";
 
-            // Query the database and map the results to Pracownik objects
             List<Pracownik> pracownicyList = jdbcTemplate.query(sql,
                     (rs, rowNum) -> {
                         Pracownik pracownik = new Pracownik();
@@ -35,99 +34,148 @@ public class Database {
                         pracownik.setNazwisko(rs.getString("NAZWISKO"));
                         pracownik.setPesel(rs.getString("PESEL"));
                         pracownik.setPlec(rs.getString("PLEC"));
-
                         return pracownik;
                     });
 
-            // Add the list to the model
             model.addAttribute("pracownicy", pracownicyList);
 
         } catch (Exception e) {
             System.err.println("Database connection failed: " + e.getMessage());
         }
-        return "pracownicy";  // Thymeleaf template
+        return "pracownicy";
     }
 
     @GetMapping("/admin/kontrakty")
     public String getKontraktyForAdmin(Model model) {
         try {
-            // SQL query to fetch all contract details for admin, ordered by ID_KONTRAKTU
-            String sql = "SELECT k.ID_KONTRAKTU, k.TYTUL_KONTRAKTU, k.DATA_ZAWARCIA, " +
+            String sql = "SELECT k.ID_KONTRAKTU, k.TYTUL_KONTRAKTU, " +
                     "a.NAZWA AS ARMATOR_NAZWA, s.NAZWA AS STATKI_NAZWA " +
                     "FROM KONTRAKTY k " +
                     "JOIN ARMATORZY a ON k.ID_ARMATORA = a.ID_ARMATORA " +
                     "JOIN STATKI s ON k.ID_STATKU = s.ID_STATKU " +
-                    "ORDER BY k.ID_KONTRAKTU"; // Ensure results are sorted by ID_KONTRAKTU
+                    "ORDER BY k.ID_KONTRAKTU";
 
-            // Query the database and map the results
-            List<String> kontraktyList = jdbcTemplate.query(sql,
-                    (rs, rowNum) -> "ID_KONTRAKTU: " + rs.getInt("ID_KONTRAKTU") +
-                            ", TYTUL_KONTRAKTU: " + rs.getString("TYTUL_KONTRAKTU") +
-                            ", DATA_ZAWARCIA: " + rs.getDate("DATA_ZAWARCIA") +
-                            ", ARMATOR_NAZWA: " + rs.getString("ARMATOR_NAZWA") +
-                            ", STATKI_NAZWA: " + rs.getString("STATKI_NAZWA"));
+            List<Kontrakt> kontraktyList = jdbcTemplate.query(sql,
+                    (rs, rowNum) -> {
+                        Kontrakt kontrakt = new Kontrakt();
+                        kontrakt.setIdKontraktu(rs.getInt("ID_KONTRAKTU"));
+                        kontrakt.setTytulKontraktu(rs.getString("TYTUL_KONTRAKTU"));
+                        kontrakt.setArmatorNazwa(rs.getString("ARMATOR_NAZWA"));
+                        kontrakt.setStatkiNazwa(rs.getString("STATKI_NAZWA"));
+                        return kontrakt;
+                    });
 
             model.addAttribute("kontrakty", kontraktyList);
         } catch (Exception e) {
             System.err.println("Database connection failed: " + e.getMessage());
         }
-        return "kontrakty_admin"; // Admin-specific Thymeleaf template
+        return "kontrakty_admin";
     }
-
     @GetMapping("/user/kontrakty")
     public String getKontraktyForUser(Model model) {
         try {
-            // SQL query for Oracle to fetch the first 5 contracts
-            String sql = "SELECT k.ID_KONTRAKTU, k.TYTUL_KONTRAKTU, k.DATA_ZAWARCIA, " +
-                    "a.NAZWA AS ARMATOR_NAZWA " +
+            // Updated SQL query to include ship names
+            String sql = "SELECT k.ID_KONTRAKTU, k.TYTUL_KONTRAKTU, " +
+                    "a.NAZWA AS ARMATOR_NAZWA, s.NAZWA AS STATKI_NAZWA " +
                     "FROM KONTRAKTY k " +
                     "JOIN ARMATORZY a ON k.ID_ARMATORA = a.ID_ARMATORA " +
+                    "JOIN STATKI s ON k.ID_STATKU = s.ID_STATKU " +
                     "ORDER BY k.ID_KONTRAKTU " +
-                    "FETCH FIRST 5 ROWS ONLY"; // Fetch the first 5 rows
+                    "FETCH FIRST 2 ROWS ONLY";
 
-            // Query the database and map the results
-            List<String> kontraktyList = jdbcTemplate.query(sql,
-                    (rs, rowNum) -> "ID_KONTRAKTU: " + rs.getInt("ID_KONTRAKTU") +
-                            ", TYTUL_KONTRAKTU: " + rs.getString("TYTUL_KONTRAKTU") +
-                            ", DATA_ZAWARCIA: " + rs.getDate("DATA_ZAWARCIA") +
-                            ", ARMATOR_NAZWA: " + rs.getString("ARMATOR_NAZWA"));
+
+            List<Kontrakt> kontraktyList = jdbcTemplate.query(sql,
+                    (rs, rowNum) -> {
+                        Kontrakt kontrakt = new Kontrakt();
+                        kontrakt.setIdKontraktu(rs.getInt("ID_KONTRAKTU"));
+                        kontrakt.setTytulKontraktu(rs.getString("TYTUL_KONTRAKTU"));
+                        kontrakt.setArmatorNazwa(rs.getString("ARMATOR_NAZWA"));
+                        kontrakt.setStatkiNazwa(rs.getString("STATKI_NAZWA"));
+                        return kontrakt;
+                    });
+
 
             model.addAttribute("kontrakty", kontraktyList);
         } catch (Exception e) {
+
             System.err.println("Database connection failed: " + e.getMessage());
         }
-        return "kontrakty_user"; // User-specific Thymeleaf template
+        return "kontrakty_user";
     }
+
     @PostMapping("/admin/pracownicy/{id}")
     public String deletePracownik(@PathVariable("id") int id) {
         try {
-            // SQL query to delete employee by ID
             String sql = "DELETE FROM PRACOWNICY WHERE ID_PRACOWNIKA = ?";
             jdbcTemplate.update(sql, id);
         } catch (Exception e) {
             System.err.println("Database connection failed: " + e.getMessage());
         }
-        return "redirect:/admin/pracownicy";  // Redirect back to the list of employees
+        return "redirect:/admin/pracownicy";
     }
+
     @GetMapping("/admin/pracownicy/add")
     public String showAddPracownikForm(Model model) {
-        model.addAttribute("pracownik", new Pracownik()); // Bind a new empty object for the form
-        return "add_pracownik"; // Thymeleaf template for adding employees
+        model.addAttribute("pracownik", new Pracownik());
+        return "add_pracownik";
     }
 
     @PostMapping("/admin/pracownicy/add")
     public String addPracownik(Pracownik pracownik) {
         try {
-            // SQL query to insert a new employee into the database
             String sql = "INSERT INTO PRACOWNICY (IMIE, NAZWISKO, PESEL, PLEC) VALUES (?, ?, ?, ?)";
             jdbcTemplate.update(sql, pracownik.getImie(), pracownik.getNazwisko(), pracownik.getPesel(), pracownik.getPlec());
         } catch (Exception e) {
             System.err.println("Failed to add employee: " + e.getMessage());
         }
-        return "redirect:/admin/pracownicy"; // Redirect to the employee list
+        return "redirect:/admin/pracownicy";
+    }
+    @PostMapping("/admin/kontrakty/{id}")
+    public String deleteKontraktAdmin(@PathVariable("id") int id) {
+        try {
+            String sql = "DELETE FROM KONTRAKTY WHERE ID_KONTRAKTU = ?";
+            jdbcTemplate.update(sql, id);
+        } catch (Exception e) {
+            System.err.println("Failed to delete contract: " + e.getMessage());
+        }
+        return "redirect:/admin/kontrakty";
+    }
+    @PostMapping("/user/kontrakty/{id}")
+    public String deleteKontraktUser(@PathVariable("id") int id) {
+        try {
+            String sql = "DELETE FROM KONTRAKTY WHERE ID_KONTRAKTU = ?";
+            jdbcTemplate.update(sql, id);
+        } catch (Exception e) {
+            System.err.println("Failed to delete contract: " + e.getMessage());
+        }
+        return "redirect:/user/kontrakty";
+    }
+    @GetMapping("/admin/kontrakty/add")
+    public String showAddKontraktForm(Model model) {
+        try {
+
+            model.addAttribute("kontrakt", new Kontrakt());
+        } catch (Exception e) {
+            System.err.println("Failed to load form data: " + e.getMessage());
+        }
+        return "add_kontrakt";
     }
 
+    @PostMapping("/admin/kontrakty/add")
+    public String addKontrakt(Kontrakt kontrakt) {
+        try {
+            String sql = "INSERT INTO KONTRAKTY (TYTUL_KONTRAKTU, ID_ARMATORA, ID_STATKU) " +
+                    "VALUES (?, ?, ?)";
 
-
-
+            jdbcTemplate.update(sql,
+                    kontrakt.getTytulKontraktu(),
+                    kontrakt.getIdArmatora(),
+                    kontrakt.getIdStatku()
+            );
+        } catch (Exception e) {
+            System.err.println("Failed to add contract: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "redirect:/admin/kontrakty";
+    }
 }

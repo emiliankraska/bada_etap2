@@ -1,15 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Kontrakty - User</title>
+  <title>Kontrakty - User View</title>
   <link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 <body>
-<h1>Kontrakty (User View)</h1>
-<ul>
-  <li th:each="kontrakt : ${kontrakty}">
-    <span th:text="${kontrakt}"></span>
-  </li>
-</ul>
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Kontrakty (User View)</h1>
+  </div>
+
+  <!-- Table for displaying contracts -->
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>ID Kontraktu</th>
+      <th>Tytuł Kontraktu</th>
+      <th>Nazwa Armatora</th>
+      <th>Nazwa Statku</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="kontrakt : ${kontrakty}">
+      <td th:text="${kontrakt.idKontraktu}"></td>
+      <td th:text="${kontrakt.tytulKontraktu}"></td>
+      <td th:text="${kontrakt.armatorNazwa}"></td>
+      <td th:text="${kontrakt.statkiNazwa}"></td>
+      <td>
+        <form th:action="@{/user/kontrakty/{id}(id=${kontrakt.idKontraktu})}" method="post"
+              onsubmit="return confirm('Are you sure you want to delete this contract?');">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-4">
+    <!-- Return button to navigate back to the user page -->
+    <a th:href="@{/user/main}" class="btn btn-secondary">Return to User Page</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

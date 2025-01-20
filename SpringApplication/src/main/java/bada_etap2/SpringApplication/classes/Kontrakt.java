@@ -1,16 +1,17 @@
 package bada_etap2.SpringApplication.classes;
 
-
 import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class Kontrakt {
     private int idKontraktu;
     private String tytulKontraktu;
-    private Date dataZawarcia;
     private String armatorNazwa;
     private String statkiNazwa;
+    private int idArmatora;
+    private int idStatku;
 
-    // Getters and Setters
+    // Getters and setters
     public int getIdKontraktu() {
         return idKontraktu;
     }
@@ -27,14 +28,6 @@ public class Kontrakt {
         this.tytulKontraktu = tytulKontraktu;
     }
 
-    public Date getDataZawarcia() {
-        return dataZawarcia;
-    }
-
-    public void setDataZawarcia(Date dataZawarcia) {
-        this.dataZawarcia = dataZawarcia;
-    }
-
     public String getArmatorNazwa() {
         return armatorNazwa;
     }
@@ -49,5 +42,21 @@ public class Kontrakt {
 
     public void setStatkiNazwa(String statkiNazwa) {
         this.statkiNazwa = statkiNazwa;
+    }
+
+    public int getIdArmatora() {
+        return idArmatora;
+    }
+
+    public void setIdArmatora(int idArmatora) {
+        this.idArmatora = idArmatora;
+    }
+
+    public int getIdStatku() {
+        return idStatku;
+    }
+
+    public void setIdStatku(int idStatku) {
+        this.idStatku = idStatku;
     }
 }

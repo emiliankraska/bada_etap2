@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add New Contract</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Add New Contract</h1>
+
+  <form th:action="@{/admin/kontrakty/add}" th:object="${kontrakt}" method="post" class="mt-4">
+    <div class="mb-3">
+      <label for="tytulKontraktu" class="form-label">Contract Title</label>
+      <input type="text" class="form-control" id="tytulKontraktu" th:field="*{tytulKontraktu}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="idArmatora" class="form-label">Shipowner ID</label>
+      <input type="number" class="form-control" id="idArmatora" th:field="*{idArmatora}" required>
+      <small id="armatorHelp" class="form-text text-muted">Enter the ID of the shipowner.</small>
+    </div>
+
+    <div class="mb-3">
+      <label for="idStatku" class="form-label">Ship ID</label>
+      <input type="number" class="form-control" id="idStatku" th:field="*{idStatku}" required>
+      <small id="statkiHelp" class="form-text text-muted">Enter the ID of the ship.</small>
+    </div>
+
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary">Add Contract</button>
+      <a th:href="@{/admin/kontrakty}" class="btn btn-secondary ms-2">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

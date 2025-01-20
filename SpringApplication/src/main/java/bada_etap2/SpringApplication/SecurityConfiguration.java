@@ -39,7 +39,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index", "/css/**", "/images/**", "/pracownicy").permitAll()
+                        .requestMatchers("/css/**", "/images/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Admin-only access
                         .requestMatchers("/user/**").hasRole("USER") // User-only access
                         .anyRequest().authenticated()
@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/index")
+                        .logoutSuccessUrl("/login")
                         .permitAll()
                 );
 
